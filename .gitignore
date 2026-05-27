@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+
+# Build output
+backend/target/
+frontend/dist/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# Runtime
+*.class
+*.jar
+!.mvn/wrapper/maven-wrapper.jar
