@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useI18n } from '../contexts/I18nContext';
 import { useAuth } from '../contexts/AuthContext';
 import { User, Role, UserGroup } from '../types/user';
-import { userApi, roleApi, groupApi, menuApi } from '../api/user';
+import { userApi, roleApi, groupApi } from '../api/user';
 import UserList from './UserList';
 import RoleList from './RoleList';
 import GroupList from './GroupList';
