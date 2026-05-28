@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useI18n } from '../contexts/I18nContext';
 import { useAuth } from '../contexts/AuthContext';
-import { User, Role, UserGroup, Menu } from '../types/user';
+import { User, Role, UserGroup } from '../types/user';
 import { userApi, roleApi, groupApi, menuApi } from '../api/user';
 import UserList from './UserList';
 import RoleList from './RoleList';
@@ -17,21 +17,18 @@ function ProfilePage() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [allRoles, setAllRoles] = useState<Role[]>([]);
   const [allGroups, setAllGroups] = useState<UserGroup[]>([]);
-  const [allMenus, setAllMenus] = useState<Menu[]>([]);
   const [editing, setEditing] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', age: '' });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [roles, groups, menus] = await Promise.all([
+        const [roles, groups] = await Promise.all([
           roleApi.list(),
           groupApi.list(),
-          menuApi.list(),
         ]);
         setAllRoles(roles);
         setAllGroups(groups);
-        setAllMenus(menus);
       } catch (error) { console.error(error); }
     };
     fetchData();
