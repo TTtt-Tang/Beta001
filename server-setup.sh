@@ -1,6 +1,6 @@
 #!/bin/bash
-# Pochacco管理系统 - 服务器初始化脚本
-# 在阿里云服务器上执行此脚本
+# Pochacco管理系统 - 阿里云服务器初始化脚本
+# 在服务器上执行: bash server-setup.sh
 
 set -e
 
@@ -36,7 +36,7 @@ if [ -d /opt/pochacco/.git ]; then
 else
     echo "克隆项目..."
     rm -rf /opt/pochacco
-    git clone https://gitlab.digitalit.com.cn/Edw/beta001.git /opt/pochacco
+    git clone https://github.com/TTtt-Tang/Beta001.git /opt/pochacco
     cd /opt/pochacco
 fi
 
@@ -50,39 +50,28 @@ sleep 20
 docker compose ps
 
 echo ""
-echo "===== 6. 安装GitLab Runner ====="
-if command -v gitlab-runner &> /dev/null; then
-    echo "GitLab Runner已安装，跳过"
-else
-    echo "安装GitLab Runner..."
-    curl -L "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.rpm.sh" | bash
-    yum install -y gitlab-runner || (curl -L "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh" | bash && apt-get install -y gitlab-runner)
-    systemctl enable gitlab-runner
-    echo "GitLab Runner安装完成"
-fi
-
-echo ""
 echo "=========================================="
-echo "  服务器初始化完成！"
+echo "  服务部署完成！"
 echo "=========================================="
 echo ""
 echo "前端访问: http://120.24.223.14"
 echo "后端API:  http://120.24.223.14/api/"
 echo ""
-echo "===== 下一步：注册GitLab Runner ====="
-echo "1. 打开浏览器访问: https://gitlab.digitalit.com.cn/Edw/beta001/-/settings/ci_cd"
-echo "2. 展开 Runners 区域，点击 'New project runner'"
-echo "3. 勾选 'Run untagged jobs'，点击 'Create runner'"
-echo "4. 复制页面上的注册命令（类似下面这行）："
+echo "===== 下一步：安装GitHub Actions Runner ====="
+echo "1. 打开浏览器访问: https://github.com/TTtt-Tang/Beta001/settings/actions/runners"
+echo "2. 点击 'New self-hosted runner'"
+echo "3. 选择 Linux / x64"
+echo "4. 按页面上的命令在服务器上执行（类似以下命令）："
 echo ""
-echo "   gitlab-runner register --url https://gitlab.digitalit.com.cn --token <你的token>"
+echo "   mkdir actions-runner && cd actions-runner"
+echo "   curl -o actions-runner-linux-x64-2.321.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.321.0/actions-runner-linux-x64-2.321.0.tar.gz"
+echo "   tar xzf ./actions-runner-linux-x64-2.321.0.tar.gz"
+echo "   ./config.sh --url https://github.com/TTtt-Tang/Beta001 --token <页面显示的token>"
+echo "   ./run.sh"
 echo ""
-echo "5. 在服务器上执行该命令，提示输入时："
-echo "   - Executor: 输入 shell"
-echo "   - Description: 输入 pochacco-server"
-echo "   - Tags: 输入 pochacco-server"
+echo "5. 安装为系统服务（开机自启）："
+echo "   cd ~/actions-runner"
+echo "   sudo ./svc.sh install"
+echo "   sudo ./svc.sh start"
 echo ""
-echo "6. 将gitlab-runner用户加入docker组："
-echo "   usermod -aG docker gitlab-runner"
-echo ""
-echo "完成后，每次 git push 就会自动部署！"
+echo "完成后，每次 git push 到 main 分支就会自动部署！"

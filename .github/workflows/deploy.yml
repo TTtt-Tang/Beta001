@@ -1,0 +1,25 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Pull latest code
+        run: |
+          cd /opt/pochacco
+          git pull origin main
+
+      - name: Rebuild and restart services
+        run: |
+          cd /opt/pochacco
+          docker compose up -d --build
+
+      - name: Check services
+        run: |
+          cd /opt/pochacco
+          docker compose ps
+          echo "Deploy completed at $(date)"
