@@ -2,7 +2,7 @@ import axios from 'axios';
 import { User, Role, UserGroup, Menu, Blog, PageResult } from '../types/user';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8080/api',
+  baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
   timeout: 10000,
 });
 

@@ -39,7 +39,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = async (username: string, password: string): Promise<{ success: boolean; message: string }> => {
     try {
       const axios = (await import('axios')).default;
-      const res = await axios.post('http://localhost:8080/api/auth/login', { username, password });
+      const baseURL = import.meta.env.VITE_API_BASE_URL || '/api';
+      const res = await axios.post(`${baseURL}/auth/login`, { username, password });
       const data = res.data;
       if (data.code === 200) {
         const userData = data.data;
